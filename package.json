@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "vite",
     "build:client": "vite build",
-    "build:server": "esbuild server/node-build.ts --bundle --platform=node --target=node18 --outfile=dist/server/node-build.mjs --format=esm",
+  "build:server": "esbuild server/node-build.ts --bundle --platform=node --target=node18 --outfile=dist/server/node-build.js --format=cjs",
     "build": "npm run build:client && npm run build:server"
   },
 
