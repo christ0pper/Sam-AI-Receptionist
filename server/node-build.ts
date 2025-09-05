@@ -6,19 +6,8 @@ const app = createServer();
 const port = process.env.PORT || 3000;
 
 // In production, serve the built SPA files
-// import.meta is not available when esbuild outputs CommonJS, so use a robust fallback
-// Prefer the module's directory if available, otherwise fall back to process.cwd()
-let moduleDir: string;
-try {
-  // __dirname exists in CommonJS
-  // @ts-ignore
-  moduleDir = __dirname;
-} catch (e) {
-  // In ESM environments or bundled contexts, fallback to process.cwd()
-  moduleDir = process.cwd();
-}
-
-const distPath = path.join(moduleDir, "../spa");
+const __dirname = import.meta.dirname;
+const distPath = path.join(__dirname, "../spa");
 
 // Serve static files
 app.use(express.static(distPath));
