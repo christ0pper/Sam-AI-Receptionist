@@ -7,11 +7,12 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "server/node-build.ts"),
       name: "server",
-      fileName: "production",
+      fileName: "node-build",
       formats: ["es"],
     },
     outDir: "dist/server",
-  target: "node18",
+    emptyOutDir: false, // Don't delete other files in dist/server
+    target: "node18",
     ssr: true,
     rollupOptions: {
       external: [

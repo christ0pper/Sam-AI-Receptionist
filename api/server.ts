@@ -1,15 +1,28 @@
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import express from "express";
-import serverless from "serverless-http";
+import cors from "cors";
+import { handleDemo } from "../server/routes/demo";
 
 const app = express();
 
-// Example endpoint
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// API routes
+app.get("/api/ping", (_req, res) => {
+  const ping = process.env.PING_MESSAGE ?? "ping";
+  res.json({ message: ping });
+});
+
+app.get("/api/demo", handleDemo);
+
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Hello from Express!" });
 });
 
-// Add more routes here, same as your old server
-
-// Export a handler for serverless adapters if needed, and the app for direct usage
-export const handler = serverless(app);
-export default app;
+// Export for Vercel
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  return app(req, res);
+}
