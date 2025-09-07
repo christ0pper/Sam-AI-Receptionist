@@ -4,11 +4,11 @@ import MobileNav from "../../components/MobileNav";
 export default function Navbar() {
   return (
     <header className="w-full bg-white border-b">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center">
             <div
-              className="w-20 h-14 bg-primary rounded-lg flex items-center justify-center"
+              className="w-16 h-12 sm:w-20 sm:h-14 bg-primary rounded-lg flex items-center justify-center"
               style={{
                 backgroundImage: "url(/logo.png)",
                 backgroundRepeat: "no-repeat",
@@ -18,7 +18,7 @@ export default function Navbar() {
             />
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8 desktop-nav-should-hide">
+          <nav className="hidden md:flex items-center space-x-8">
             <a
               href="#home"
               className="text-gray-700 hover:text-primary font-work-sans font-medium"
@@ -52,9 +52,7 @@ export default function Navbar() {
           </nav>
           
           {/* Mobile Navigation */}
-          <div className="mobile-nav-should-show">
-            <MobileNav currentPage="home" />
-          </div>
+          <MobileNav currentPage="home" />
         </div>
       </div>
     </header>

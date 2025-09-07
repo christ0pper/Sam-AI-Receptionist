@@ -30,7 +30,7 @@ export default function Services() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div className="space-y-6 flex flex-col justify-center h-full">
-            <h2 className="text-5xl font-bold font-work-sans text-gray-900">
+            <h2 className="text-center lg:text-left text-5xl font-bold font-work-sans text-gray-900">
               Services
             </h2>
             <p className="text-lg font-work-sans text-gray-700 leading-relaxed">

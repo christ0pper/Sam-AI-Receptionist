@@ -163,13 +163,3 @@
     display: block !important;
   }
 }
-
-/* Navigation fixes */
-@media (max-width: 767px) {
-  .mobile-nav-should-show {
-    display: block !important;
-  }
-  .desktop-nav-should-hide {
-    display: none !important;
-  }
-}
