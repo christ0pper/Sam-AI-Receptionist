@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import emailjs from "emailjs-com";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import MobileNav from "@/components/MobileNav";
 import {
   Phone,
@@ -19,6 +19,26 @@ export default function Index() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // Detect mobile vs desktop
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Don't render until client-side hydration is complete
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,7 +98,7 @@ export default function Index() {
                 }}
               />
             </div>
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-8 desktop-nav-should-hide">
               <a
                 href="#home"
                 className="text-gray-700 hover:text-primary font-work-sans font-medium"
@@ -110,7 +130,9 @@ export default function Index() {
                 Contact
               </a>
             </nav>
-            <MobileNav currentPage="home" />
+            <div className="mobile-nav-should-show">
+              <MobileNav currentPage="home" />
+            </div>
           </div>
         </div>
       </header>
@@ -118,83 +140,43 @@ export default function Index() {
       {/* Hero Section */}
       <section className="py-12 sm:py-16 lg:py-20 xl:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Mobile Layout: Stacked Vertically */}
-          <div className="lg:hidden text-center">
-            {/* 1. Heading First */}
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight mb-6">
-              HELLO
-              <br />
-              EVERYONE
-            </h1>
-            {/* 2. Description Second */}
-            <div className="text-gray-600 text-lg sm:text-xl leading-relaxed mb-8 max-w-lg mx-auto">
-              Never miss a customer call again. Our AI receptionist answers
-              calls, books appointments, qualifies leads, and provides instant
-              support — all in a natural human-like voice. From scheduling to
-              sales, it works around the clock so your business can focus on
-              growth.
-            </div>
-            {/* 3. Video Third */}
-            <div className="relative w-full max-w-xs sm:max-w-sm mx-auto aspect-square mb-8">
-              <video
-                id="heroVideo"
-                src="/sam.mov"
-                className="w-full h-full object-cover rounded-3xl shadow-2xl"
-                playsInline
-                controls={false}
-              />
-            </div>
-            {/* 4. Button Fourth (Last) */}
-            <button
-              onClick={() => {
-                const vid = document.getElementById(
-                  "heroVideo",
-                ) as HTMLVideoElement | null;
-                if (vid) {
-                  vid.muted = false;
-                  vid.loop = false;
-                  vid.currentTime = 0;
-                  vid.play();
-                }
-              }}
-              className="inline-block bg-purple-600 text-white text-lg font-semibold leading-7 px-6 py-3 sm:px-8 sm:py-4 rounded-lg shadow-lg transition-all duration-200 hover:bg-purple-700"
-            >
-              Say Hello
-            </button>
-          </div>
-
-          {/* Desktop Layout: Side by Side */}
-          <div className="hidden lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Desktop: Video on left */}
-            <div>
-              <div className="relative w-96 h-96 mx-auto">
-                <video
-                  id="heroVideoDesktop"
-                  src="/sam.mov"
-                  className="w-full h-full object-cover rounded-3xl shadow-2xl"
-                  playsInline
-                  controls={false}
-                />
+          
+          {/* MOBILE LAYOUT: Force display on small screens */}
+          <div className="force-mobile-layout">
+            <div className="text-center">
+              {/* DEBUG: Mobile layout indicator */}
+              <div className="bg-red-500 text-white p-2 mb-4 rounded text-sm font-bold">
+                📱 MOBILE LAYOUT ACTIVE - Video should be BELOW text
               </div>
-            </div>
-            {/* Desktop: Text on right */}
-            <div className="text-left">
-              <h1 className="text-6xl font-bold text-gray-900 leading-tight mb-6">
+              {/* 1. Heading First */}
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight mb-6">
                 HELLO
                 <br />
                 EVERYONE
               </h1>
-              <div className="text-gray-600 text-xl leading-relaxed mb-8 max-w-lg">
+              {/* 2. Description Second */}
+              <div className="text-gray-600 text-lg sm:text-xl leading-relaxed mb-8 max-w-lg mx-auto">
                 Never miss a customer call again. Our AI receptionist answers
                 calls, books appointments, qualifies leads, and provides instant
                 support — all in a natural human-like voice. From scheduling to
                 sales, it works around the clock so your business can focus on
                 growth.
               </div>
+              {/* 3. Video Third */}
+              <div className="relative w-full max-w-xs sm:max-w-sm mx-auto aspect-square mb-8">
+                <video
+                  id="heroVideo"
+                  src="/sam.mov"
+                  className="w-full h-full object-cover rounded-3xl shadow-2xl"
+                  playsInline
+                  controls={false}
+                />
+              </div>
+              {/* 4. Button Fourth (Last) */}
               <button
                 onClick={() => {
                   const vid = document.getElementById(
-                    "heroVideoDesktop",
+                    "heroVideo",
                   ) as HTMLVideoElement | null;
                   if (vid) {
                     vid.muted = false;
@@ -203,10 +185,62 @@ export default function Index() {
                     vid.play();
                   }
                 }}
-                className="inline-block bg-purple-600 text-white text-lg font-semibold leading-7 px-8 py-4 rounded-lg shadow-lg transition-all duration-200 hover:bg-purple-700"
+                className="inline-block bg-purple-600 text-white text-lg font-semibold leading-7 px-6 py-3 sm:px-8 sm:py-4 rounded-lg shadow-lg transition-all duration-200 hover:bg-purple-700"
               >
                 Say Hello
               </button>
+            </div>
+          </div>
+
+          {/* DESKTOP LAYOUT: Show on large screens */}
+          <div className="force-desktop-layout">
+            <div className="bg-blue-500 text-white p-2 mb-4 rounded text-sm font-bold">
+              🖥️ DESKTOP LAYOUT ACTIVE - Video on left, text on right
+            </div>
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Desktop: Video on left */}
+              <div>
+                <div className="relative w-96 h-96 mx-auto">
+                  <video
+                    id="heroVideoDesktop"
+                    src="/sam.mov"
+                    className="w-full h-full object-cover rounded-3xl shadow-2xl"
+                    playsInline
+                    controls={false}
+                  />
+                </div>
+              </div>
+              {/* Desktop: Text on right */}
+              <div className="text-left">
+                <h1 className="text-6xl font-bold text-gray-900 leading-tight mb-6">
+                  HELLO
+                  <br />
+                  EVERYONE
+                </h1>
+                <div className="text-gray-600 text-xl leading-relaxed mb-8 max-w-lg">
+                  Never miss a customer call again. Our AI receptionist answers
+                  calls, books appointments, qualifies leads, and provides instant
+                  support — all in a natural human-like voice. From scheduling to
+                  sales, it works around the clock so your business can focus on
+                  growth.
+                </div>
+                <button
+                  onClick={() => {
+                    const vid = document.getElementById(
+                      "heroVideoDesktop",
+                    ) as HTMLVideoElement | null;
+                    if (vid) {
+                      vid.muted = false;
+                      vid.loop = false;
+                      vid.currentTime = 0;
+                      vid.play();
+                    }
+                  }}
+                  className="inline-block bg-purple-600 text-white text-lg font-semibold leading-7 px-8 py-4 rounded-lg shadow-lg transition-all duration-200 hover:bg-purple-700"
+                >
+                  Say Hello
+                </button>
+              </div>
             </div>
           </div>
         </div>

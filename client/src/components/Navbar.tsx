@@ -1,4 +1,5 @@
 import React from "react";
+import MobileNav from "../../components/MobileNav";
 
 export default function Navbar() {
   return (
@@ -17,7 +18,7 @@ export default function Navbar() {
             />
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 desktop-nav-should-hide">
             <a
               href="#home"
               className="text-gray-700 hover:text-primary font-work-sans font-medium"
@@ -49,6 +50,11 @@ export default function Navbar() {
               Contact
             </a>
           </nav>
+          
+          {/* Mobile Navigation */}
+          <div className="mobile-nav-should-show">
+            <MobileNav currentPage="home" />
+          </div>
         </div>
       </div>
     </header>

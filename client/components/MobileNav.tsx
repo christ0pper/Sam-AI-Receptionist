@@ -25,10 +25,6 @@ export default function MobileNav({ currentPage = "home" }: MobileNavProps) {
       href: currentPage === "demo" ? "/demo" : "/demo", 
       label: "Demo" 
     },
-    { 
-      href: currentPage === "demo" ? "/#contact" : "#contact", 
-      label: "Contact" 
-    },
   ];
 
   return (
@@ -98,7 +94,7 @@ export default function MobileNav({ currentPage = "home" }: MobileNavProps) {
               onClick={() => setIsOpen(false)}
               className="block w-full bg-primary hover:bg-primary/90 text-white font-work-sans font-semibold px-6 py-3 rounded-lg text-center transition-colors duration-200"
             >
-              Get Started
+              Contact Us
             </a>
           </div>
         </nav>

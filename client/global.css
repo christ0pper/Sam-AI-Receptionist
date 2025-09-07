@@ -125,3 +125,51 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile Layout Force Classes */
+.mobile-layout {
+  display: block !important;
+}
+
+.desktop-layout {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  .mobile-layout {
+    display: none !important;
+  }
+  
+  .desktop-layout {
+    display: block !important;
+  }
+}
+
+/* FORCE Mobile Layout Rules - Override everything */
+.force-mobile-layout {
+  display: block !important;
+}
+
+.force-desktop-layout {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  .force-mobile-layout {
+    display: none !important;
+  }
+  
+  .force-desktop-layout {
+    display: block !important;
+  }
+}
+
+/* Navigation fixes */
+@media (max-width: 767px) {
+  .mobile-nav-should-show {
+    display: block !important;
+  }
+  .desktop-nav-should-hide {
+    display: none !important;
+  }
+}
